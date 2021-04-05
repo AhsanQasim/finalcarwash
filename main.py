@@ -439,7 +439,7 @@ class App(QMainWindow):
         self.warlabel = QtWidgets.QLabel(self)
         self.warlabel.setText("")
         self.warlabel.move(120, 360)
-        self.prilabel.setGeometry(QtCore.QRect(120, 360, 200, 20))  # (x, y, width, height)
+        self.warlabel.setGeometry(QtCore.QRect(120, 360, 200, 20))  # (x, y, width, height)
         # connect button to function on_click
         self.regbutton.clicked.connect(self.on_clickreg)
         self.signbutton.clicked.connect(self.on_clicksign)
