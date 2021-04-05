@@ -1,5 +1,5 @@
-regular wash\50\20\1\42
-Car steam Cleaning\100\45\0\0
-car detailing\90\40\1\76
-car polish\60\25\0\0
+regular wash\50\20\1\25
+Car steam Cleaning\100\45\1\50
+car detailing\90\40\1\45
+car polish\60\25\1\51
 car interior clean\140\65\0\0

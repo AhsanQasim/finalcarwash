@@ -26,6 +26,7 @@ class Person:
         self.memberType = "regular"
         self.points = 0
 
+
     def getusername(self):
         return self.username
     def getpass(self):
@@ -34,87 +35,6 @@ class Person:
         return self.washcard
     def getacount(self):
         return self.accountamount
-
-
-# def product_bought(product_name, product_price, amount_sold, money_earned):
-#     my_file = open("records.txt", "r")
-#     content = my_file.read()
-#     content_list = content.split("\n")
-#
-#     found = False
-#     user_id = ""
-#     m = 0
-#     for k in content_list:
-#         temp_array = k.split("\\")
-#
-#         if temp_array != "":
-#             if ((temp_array[3] == index01)):
-#                 user_id = temp_array[3]
-#                 found = True
-#                 if (int(temp_array[7]) < int(product_price)):
-#                     print("Washcard balance less than the selected product price")
-#                     break
-#                 else:
-#                     amount = int(temp_array[7]) - int(product_price)
-#                     stringbecome = temp_array[0] + "\\" + temp_array[1] + "\\" + temp_array[2] + "\\" + temp_array[
-#                         3] + "\\" + temp_array[4] + "\\" + temp_array[5] + "\\" + temp_array[6] + "\\" + str(amount)
-#                     content_list[m] = stringbecome
-#                     break
-#             else:
-#                 m = m + 1
-#         else:
-#             break
-#     if (found):
-#         print("Updating Balance")
-#         with open("records.txt", "w") as f:
-#             for i in range(0, len(content_list) - 1):
-#                 f.writelines((content_list[i]))
-#                 f.writelines("\n")
-#             f.close()
-#
-#         # Products and prices
-#
-#         final_content_list = []
-#         with open("products &  prices.txt", "r") as my_file:
-#             content = my_file.read()
-#             content_list = content.split("\n")
-#             final_content_list = content_list
-#             index_number = -1
-#             for i in range(0, len(content_list)):
-#
-#                 if (content_list[i].split("\\")[0] == product_name):
-#                     index_number = i
-#                     break
-#                 else:
-#                     continue
-#             if (index_number == -1):
-#                 print("Product not found")
-#             else:
-#                 print("Product present at index : " + str(index_number))
-#
-#     my_file = open("products &  prices.txt", "r")
-#     content = my_file.read()
-#     content_list = content.split("\n")
-#
-#     found = False
-#     m = 0
-#
-#     temp_array = content_list[index_number].split("\\")
-#
-#     amount_increase = int(amount_sold) + 1
-#     profit_increase = int(money_earned) + int(product_price)
-#
-#     stringbecome = str(temp_array[0]) + "\\" + str(temp_array[1]) + "\\" + str(temp_array[2]) + "\\" + str(
-#         amount_increase) + "\\" + str(profit_increase)
-#
-#     content_list[index_number] = stringbecome
-#
-#     print("Products and prices updated")
-#     with open("products &  prices.txt", "w") as f:
-#         for i in range(0, len(content_list) - 1):
-#             f.writelines((content_list[i]))
-#             f.writelines("\n")
-#         f.close()
 
 def product_bought(product_name, product_price, amount_sold, money_earned):
     my_file = open("records.txt", "r")
@@ -126,8 +46,8 @@ def product_bought(product_name, product_price, amount_sold, money_earned):
     m = 0
     for k in content_list:
         temp_array = k.split("\\")
-
         if temp_array != "":
+
             if len(temp_array) == 11:
                 if ((temp_array[3] == index01)):
                     user_id = temp_array[3]
@@ -439,7 +359,7 @@ class App(QMainWindow):
         self.warlabel = QtWidgets.QLabel(self)
         self.warlabel.setText("")
         self.warlabel.move(120, 360)
-        self.prilabel.setGeometry(QtCore.QRect(120, 360, 200, 20))  # (x, y, width, height)
+        self.warlabel.setGeometry(QtCore.QRect(120, 360, 200, 20))  # (x, y, width, height)
         # connect button to function on_click
         self.regbutton.clicked.connect(self.on_clickreg)
         self.signbutton.clicked.connect(self.on_clicksign)
@@ -612,74 +532,84 @@ class Signinwindow(QDialog):
 
     def signinfunc(self):
         # f = open("webuser.txt", "a")
-        global index01
-        global number
-        global identity
-        my_file = open("webuser.txt", "r")
-        content = my_file.read()
-        content_listsign = content.split("\n")
-        print(content_listsign)
+        valid = True
+        s = self.patextbox.text()
+        try:
+            if not s:
+                print("Input must not be empty")
+                self.patextbox.setText("Invalid")
+                valid = False
+        except ValueError:
+            print("invalid")
+        if valid == True:
+            global index01
+            global number
+            global identity
+            my_file = open("webuser.txt", "r")
+            content = my_file.read()
+            content_listsign = content.split("\n")
+            print(content_listsign)
 
-        my_file.close()
-        username = self.ustextbox.text()
-        password = self.patextbox.text()
+            my_file.close()
+            username = self.ustextbox.text()
+            password = self.patextbox.text()
 
-        found = False
-        Employee_found = False
-        Manager_found = False
-        for k in content_listsign:
-            temp_array = k.split("\\")
-            # Simple User
-            if (temp_array[3] == "user"):
+            found = False
+            Employee_found = False
+            Manager_found = False
+            for k in content_listsign:
+                temp_array = k.split("\\")
+                # Simple User
+                if (temp_array[3] == "user"):
 
-                if ((temp_array[0] == username) and (temp_array[1] == password)):
-                    found = True
-                    index01 = temp_array[2]
-                    number=index01
-                    identity="user"
-                    break
+                    if ((temp_array[0] == username) and (temp_array[1] == password)):
+                        found = True
+                        index01 = temp_array[2]
+                        number=index01
+                        identity="user"
+                        break
+                else:
+                    if ((temp_array[0] == username) and (temp_array[1] == password)):
+                        found = True
+                        if (temp_array[3] == "employee"):
+                            Employee_found = True
+
+                            index01 = temp_array[2]
+                            number = index01
+                            identity="employee"
+                            print(str(index01))
+                        else:
+                            Manager_found = True
+                            index01 = temp_array[2]
+                            number = index01
+                            identity="manager"
+
+                        break
+
+            if (found and Employee_found == False and Manager_found == False):
+                print("FOUND CREDENTIALS")
+                self.cams = UserMain()
+                self.cams.show()
+                self.show()
+                self.close()
+
+            elif (found and Employee_found == True):
+                print("FOUND Employee CREDENTIALS")
+                self.cams = EmployeeMain()
+                self.cams.show()
+                self.show()
+                self.close()
+
+            elif (found and Manager_found == True):
+                print("FOUND manager CREDENTIALS")
+                self.cams = ManagerMain()
+                self.cams.show()
+                self.show()
+                self.close()
+
             else:
-                if ((temp_array[0] == username) and (temp_array[1] == password)):
-                    found = True
-                    if (temp_array[3] == "employee"):
-                        Employee_found = True
-
-                        index01 = temp_array[2]
-                        number = index01
-                        identity="employee"
-                        print(str(index01))
-                    else:
-                        Manager_found = True
-                        index01 = temp_array[2]
-                        number = index01
-                        identity="manager"
-
-                    break
-
-        if (found and Employee_found == False and Manager_found == False):
-            print("FOUND CREDENTIALS")
-            self.cams = UserMain()
-            self.cams.show()
-            self.show()
-            self.close()
-
-        elif (found and Employee_found == True):
-            print("FOUND Employee CREDENTIALS")
-            self.cams = EmployeeMain()
-            self.cams.show()
-            self.show()
-            self.close()
-
-        elif (found and Manager_found == True):
-            print("FOUND manager CREDENTIALS")
-            self.cams = ManagerMain()
-            self.cams.show()
-            self.show()
-            self.close()
-
-        else:
-            print("DID NOT FIND  CREDENTIALS")
-            self.close()
+                print("DID NOT FIND  CREDENTIALS")
+                self.close()
 
     def goMainWindow(self):
         self.cams = App()
@@ -748,41 +678,56 @@ class UserMain(QMainWindow):
 
     @pyqtSlot()
     def on_clicktopup(self):
-        my_file = open("records.txt", "r")
-        content = my_file.read()
-        content_listtop = content.split("\n")
-        print(self.amounttextbox.text())
-        found = False
-        m = 0
-        for k in content_listtop:
-            temp_array = k.split("\\")
-            if (len(temp_array) > 2):
-                if ((temp_array[3] == index01)):
-                    found = True
-                    amount = int(temp_array[9]) + int(self.amounttextbox.text())
-                    stringbecome = temp_array[0] + "\\" + temp_array[1] + "\\" + temp_array[2] + "\\" + temp_array[
-                        3] + "\\" + temp_array[4] + "\\" + temp_array[5] + "\\" + temp_array[6] + "\\" + temp_array[
-                                       7] + "\\" + temp_array[8] + "\\" + str(amount) + "\\" + " "
-                    content_listtop[m] = stringbecome
-                    break
-                else:
-                    m = m + 1
-            else:
-                break
+        valid = True
+        s=self.amounttextbox.text()
+        try:
+            if not s:
+                print("Input must not be empty")
+                self.amounttextbox.setText("Invalid")
+                valid = False
+            elif not s.isdigit():
+                print("Input must be a digit")
+                self.amounttextbox.setText("Invalid")
+                valid = False
+        except ValueError:
+            print("Must be an integer")
 
-        if (found):
-            print("Balance Added")
-            with open("records.txt", "w") as f:
-                print(len(content_listtop))
-                for i in range(0, len(content_listtop) - 1):
-                    f.writelines((content_listtop[i]))
-                    f.writelines("\n")
-                f.close()
-            rec = open("records.txt", "r")
-            print(rec.read())
-            rec.close()
-        else:
-            print("Unable to add")
+        if valid == True:
+            my_file = open("records.txt", "r")
+            content = my_file.read()
+            content_listtop = content.split("\n")
+            print(self.amounttextbox.text())
+            found = False
+            m = 0
+            for k in content_listtop:
+                temp_array = k.split("\\")
+                if (len(temp_array) > 2):
+                    if ((temp_array[3] == index01)):
+                        found = True
+                        amount = int(temp_array[9]) + int(self.amounttextbox.text())
+                        stringbecome = temp_array[0] + "\\" + temp_array[1] + "\\" + temp_array[2] + "\\" + temp_array[
+                            3] + "\\" + temp_array[4] + "\\" + temp_array[5] + "\\" + temp_array[6] + "\\" + temp_array[
+                                           7] + "\\" + temp_array[8] + "\\" + str(amount) + "\\" + " "
+                        content_listtop[m] = stringbecome
+                        break
+                    else:
+                        m = m + 1
+                else:
+                    break
+
+            if (found):
+                print("Balance Added")
+                with open("records.txt", "w") as f:
+                    print(len(content_listtop))
+                    for i in range(0, len(content_listtop) - 1):
+                        f.writelines((content_listtop[i]))
+                        f.writelines("\n")
+                    f.close()
+                rec = open("records.txt", "r")
+                print(rec.read())
+                rec.close()
+            else:
+                print("Unable to add")
 
     @pyqtSlot()
     def on_clickviewinfo(self):
@@ -1296,9 +1241,23 @@ class EmployeeMain(QMainWindow):
         self.show()
     @pyqtSlot()
     def on_clicktopup(self):
-        global addamount
-        addamount=self.amounttextbox.text()
-        FMtopupemployee_manager()
+        valid = True
+        s = self.amounttextbox.text()
+        try:
+            if not s:
+                print("Input must not be empty")
+                self.amounttextbox.setText("Invalid")
+                valid = False
+            elif not s.isdigit():
+                print("Input must be a digit")
+                self.amounttextbox.setText("Invalid")
+                valid = False
+        except ValueError:
+            print("Must be an integer")
+        if valid == True:
+            global addamount
+            addamount = self.amounttextbox.text()
+            FMtopupemployee_manager()
 
 
     @pyqtSlot()
@@ -1530,7 +1489,7 @@ class usercarddetails(QDialog):
         self.setWindowIcon(self.style().standardIcon(QStyle.SP_FileDialogInfoView))
         self.left = 200
         self.top = 200
-        self.width = 400
+        self.width = 600
         self.height = 400
         self.usercard()
 
@@ -1589,7 +1548,7 @@ def FMreturnusercard():
         if temp_array != "":
             if len(temp_array) > 10:
                 found = True
-                stringbecome =stringbecome + "      User Name: " + temp_array[1] + "      Wash Card No: " + temp_array[2] + "      Card Amount: " + temp_array[9] + "\n"
+                stringbecome =stringbecome + "      User Name: " + temp_array[1] + "      Wash Card No: " + temp_array[3] + "      Card Amount: " + temp_array[9] + "\n"
                 m = m + 1
         else:
             break
@@ -1781,12 +1740,26 @@ class ManagerMain(QMainWindow):
         self.close()
     def on_clickdeleteuser(self):
         global deletee
-        deletee=self.sttextbox.text()
-        if deletee == "":
-            self.sttextbox.setText("Enter Washcard No Here")
-        else:
-            FMdeleteuser()
-            self.sttextbox.setText("")
+        valid = True
+        s = self.sttextbox.text()
+        try:
+            if not s:
+                print("Input must not be empty")
+                self.sttextbox.setText("Invalid")
+                valid = False
+            elif not s.isdigit():
+                print("Input must be a digit")
+                self.sttextbox.setText("Invalid")
+                valid = False
+        except ValueError:
+            print("Must be an integer")
+        if valid == True:
+            deletee = self.sttextbox.text()
+            hello = FMdeleteuser()
+            if hello=="done":
+                self.sttextbox.setText("Washcard Doesnt exist")
+            else:
+                self.sttextbox.setText("")
 
     def on_clickemployeedetails(self):
         self.cams = employeedetails("self.lineEdit2.text()")
@@ -1812,8 +1785,22 @@ class ManagerMain(QMainWindow):
 
     def on_clicktopup(self):
         global addamount
-        addamount=self.amounttextbox.text()
-        FMtopupemployee_manager()
+        valid = True
+        s = self.amounttextbox.text()
+        try:
+            if not s:
+                print("Input must not be empty")
+                self.amounttextbox.setText("Invalid")
+                valid = False
+            elif not s.isdigit():
+                print("Input must be a digit")
+                self.amounttextbox.setText("Invalid")
+                valid = False
+        except ValueError:
+            print("Must be an integer")
+        if valid == True:
+            addamount = self.amounttextbox.text()
+            FMtopupemployee_manager()
 
     def DailyProfitPrint(self):
         self.cams = PrintProfits("self.lineEdit2.text()")
@@ -1856,6 +1843,7 @@ class employeedetails(QDialog):
 
         self.signbutton = QPushButton('Back', self)
         self.signbutton.move(300, 300)
+        self.signbutton.clicked.connect(self.on_clickback)
 
     def on_clicksignout(self):
         self.cams = App()
@@ -2052,6 +2040,11 @@ def FMdeleteuser():
         rec.close()
         print("record updated account deleted from record.txt")
         print(content_listinfo1)
+        hello = "Done"
+        return (hello)
+    else:
+        hello="null"
+        return (hello)
 
     my_file = open("webuser.txt", "r")
     content = my_file.read()
